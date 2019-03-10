@@ -6,5 +6,6 @@
     <LinearLayout
             android:id="@+id/item_textViewList"
             android:orientation="vertical"
-            style="@style/note_item_textView"/>
+            style="@style/note_item_textView"
+            android:background="@drawable/ic_note_background"/>
 </android.widget.RelativeLayout>

@@ -56,6 +56,8 @@ class NoteEditionFragment : Fragment() {
         newNote.inputType = InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
         newNote.textAlignment = EditText.TEXT_ALIGNMENT_CENTER
         parent_layout.addView(newNote, parent_layout.childCount - 1)
+        newNote.isFocusableInTouchMode = true
+        newNote.requestFocus()
     }
 
     companion object {

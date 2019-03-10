@@ -1,11 +1,13 @@
 package michalengel.pwr.application1
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 
 import kotlinx.android.synthetic.main.activity_main.*
+import michalengel.pwr.application1.activities.WidgetAbundanceActivity
 import michalengel.pwr.application1.domain.Note
 import michalengel.pwr.application1.fragments.MainViewFragment
 import michalengel.pwr.application1.fragments.NoteEditionFragment
@@ -19,23 +21,25 @@ class MainActivity : AppCompatActivity(), NoteEditionFragment.NoteEditionListene
         setSupportActionBar(toolbar)
         addMainViewFragment()
     }
+
     private fun addMainViewFragment() {
         supportFragmentManager
             .beginTransaction()
             .add(R.id.fragment_container, MainViewFragment.newInstance())
             .commit()
     }
-    fun floatingButtonHandler (v: View) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, NoteEditionFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
+
+    fun openAbundanceActivity(v: View) {
+        val intent = Intent(this, WidgetAbundanceActivity::class.java)
     }
 
     override fun onNoteDismissed(note: Note) {
-        notes.add(note)
         Log.d(TAG, "receiving note: $note")
+        note.subnotes = note.subnotes.filter { it.isNotBlank() }
+        if (note.subnotes.isNotEmpty()) {
+            notes.add(note)
+            Log.d(TAG, "Adding note: $note")
+        }
     }
 
     override fun provideWithNotes(): MutableList<Note> {
