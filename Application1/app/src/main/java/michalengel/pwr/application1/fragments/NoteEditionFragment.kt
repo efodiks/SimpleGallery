@@ -1,8 +1,10 @@
-package michalengel.pwr.application1.views
+package michalengel.pwr.application1.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +15,15 @@ import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.fragment_note_edition.*
 import michalengel.pwr.application1.R
 import michalengel.pwr.application1.domain.Note
+import java.lang.ClassCastException
 import kotlin.collections.ArrayList
 
 class NoteEditionFragment : Fragment() {
-    private val notesEditTexts = ArrayList<EditText>()
+    private val noteEditTexts = ArrayList<EditText>()
     private lateinit var listener: NoteEditionListener
 
     interface NoteEditionListener {
-        fun onNoteDismissed (notes: Note)
+        fun onNoteDismissed (note: Note)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -28,18 +31,26 @@ class NoteEditionFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        notesEditTexts.add(main_note_edittext)
+        noteEditTexts.add(main_note_edittext)
         add_subnote_button.setOnClickListener { addAnotherEditText() }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        listener.onNoteDismissed(Note(notesEditTexts.map { it.text.toString() }))
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        listener = context as? NoteEditionListener ?: throw ClassCastException(context.toString())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val noteTexts: MutableList<String> = noteEditTexts.map { it.text.toString() }.toMutableList()
+        Log.d(TAG, listener.toString())
+        Log.d(TAG, noteTexts.toString())
+        listener.onNoteDismissed(Note(noteTexts))
     }
 
     private fun addAnotherEditText () {
         val newNote = EditText(activity)
-        notesEditTexts.add(newNote)
+        noteEditTexts.add(newNote)
         newNote.layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
         newNote.hint = resources.getString(R.string.note_hint)
         newNote.inputType = InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
@@ -48,6 +59,7 @@ class NoteEditionFragment : Fragment() {
     }
 
     companion object {
+        const val TAG = "Note_creation_fragment"
         fun newInstance(): NoteEditionFragment {return NoteEditionFragment()}
     }
 }

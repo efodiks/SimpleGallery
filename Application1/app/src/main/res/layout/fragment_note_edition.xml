@@ -9,20 +9,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/parent_layout"
             android:importantForAutofill="noExcludeDescendants"
-            tools:context=".views.NoteEditionFragment">
-        <android.support.v7.widget.Toolbar
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                android:id="@+id/toolbar2"/>
+            tools:context=".fragments.NoteEditionFragment">
+        <!--<android.support.v7.widget.Toolbar-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:background="?attr/colorPrimary"-->
+                <!--app:popupTheme="@style/AppTheme.PopupOverlay"-->
+                <!--android:id="@+id/toolbar2"/>-->
         <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:hint="@string/note_hint"
-                android:inputType="textAutoCorrect"
-                android:id="@+id/main_note_edittext"/>
+                android:id="@+id/main_note_edittext"
+                style="@style/note_edition_editText"/>
         <Button
                 android:id="@+id/add_subnote_button"
                 android:layout_gravity="center_horizontal"
