@@ -43,8 +43,8 @@ class NoteEditionFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         val noteTexts: MutableList<String> = noteEditTexts.map { it.text.toString() }.toMutableList()
-        Log.d(TAG, listener.toString())
-        Log.d(TAG, noteTexts.toString())
+        Log.d(TAG, "listiner = $listener")
+        Log.d(TAG, "sending notes: $noteTexts")
         listener.onNoteDismissed(Note(noteTexts))
     }
 

@@ -34,7 +34,7 @@ class MainViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         notesDataSet = provider.provideWithNotes()
-        Log.d(TAG, notesDataSet.toString())
+        Log.d(TAG, "creating dataSet from: $notesDataSet")
         Log.d(TAG, "activity = $activity")
         adapter = NoteListAdapter(activity as Activity, notesDataSet)
         view.recycler_view.adapter = adapter

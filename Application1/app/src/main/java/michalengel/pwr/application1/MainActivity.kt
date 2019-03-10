@@ -35,11 +35,11 @@ class MainActivity : AppCompatActivity(), NoteEditionFragment.NoteEditionListene
 
     override fun onNoteDismissed(note: Note) {
         notes.add(note)
-        Log.d(TAG, note.toString())
+        Log.d(TAG, "receiving note: $note")
     }
 
     override fun provideWithNotes(): MutableList<Note> {
-        Log.d(TAG, notes.toString())
+        Log.d(TAG, "sending notes: $notes")
         return notes
     }
 
