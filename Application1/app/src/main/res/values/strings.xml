@@ -6,4 +6,6 @@
     <string name="ActivityNullExceptionMessage">Activity = null after onViewCreated</string>
     <string name="useless_button_text1">Brief press</string>
     <string name="useless_button_text2">Long press</string>
+    <string name="checkbox2_text">checkbox2</string>
+    <string name="checkbox1_text">checkbox1</string>
 </resources>

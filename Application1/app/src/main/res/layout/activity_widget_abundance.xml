@@ -17,8 +17,7 @@
                 android:id="@+id/useless_button2"
                 android:text="@string/useless_button_text2"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                android:layout_width="wrap_content"/>
     </TableRow>
     <TableRow>
         <LinearLayout
@@ -27,14 +26,22 @@
                 android:orientation="vertical">
             <CheckBox
                     android:id="@+id/checkbox_1"
+                    android:text="@string/checkbox1_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="checkBoxListener"/>
             <CheckBox
                     android:id="@+id/checkbox_2"
+                    android:text="@string/checkbox2_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="checkBoxListener"/>
         </LinearLayout>
+    </TableRow>
+    <TableRow>
+        <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/gnome"/>
     </TableRow>
 </TableLayout>
