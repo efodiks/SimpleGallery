@@ -4,4 +4,6 @@
     <string name="add_another_subnote">Add subnote</string>
     <string name="note_hint">Type in your note</string>
     <string name="ActivityNullExceptionMessage">Activity = null after onViewCreated</string>
+    <string name="useless_button_text1">Brief press</string>
+    <string name="useless_button_text2">Long press</string>
 </resources>

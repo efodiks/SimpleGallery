@@ -29,10 +29,6 @@ class MainActivity : AppCompatActivity(), NoteEditionFragment.NoteEditionListene
             .commit()
     }
 
-    fun openAbundanceActivity(v: View) {
-        val intent = Intent(this, WidgetAbundanceActivity::class.java)
-    }
-
     override fun onNoteDismissed(note: Note) {
         Log.d(TAG, "receiving note: $note")
         note.subnotes = note.subnotes.filter { it.isNotBlank() }
