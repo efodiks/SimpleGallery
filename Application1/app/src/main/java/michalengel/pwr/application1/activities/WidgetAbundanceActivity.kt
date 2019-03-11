@@ -24,7 +24,7 @@ class WidgetAbundanceActivity : AppCompatActivity() {
     }
     fun checkBoxListener (view: View) {
         if (view is CheckBox) {
-            var message: String = ""
+            var message = ""
             val checked = view.isChecked
             when(view.id) {
                 R.id.checkbox_1 -> message = "checkbox1"
