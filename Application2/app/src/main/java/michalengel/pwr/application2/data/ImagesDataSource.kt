@@ -34,9 +34,7 @@ class ImagesDataSource(private val contentResolver: ContentResolver, val context
         )
         callback.onResult(
             getThumbnails(params.requestedLoadSize, params.requestedStartPosition),
-            0,
-            params.requestedStartPosition + params.requestedLoadSize * 3
-        )
+            0)
     }
 
     private fun getThumbnails(limit: Int, offset: Int): MutableList<Drawable> {

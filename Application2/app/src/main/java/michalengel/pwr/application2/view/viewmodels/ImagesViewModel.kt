@@ -17,8 +17,8 @@ class ImagesViewModel(private val contentResolver: ContentResolver, private val 
 
     fun loadThumbnails(): LiveData<PagedList<Drawable>> {
         val config = PagedList.Config.Builder()
-            .setPageSize(10)
-            .setEnablePlaceholders(true)
+            .setPageSize(5)
+            .setEnablePlaceholders(false)
             .build()
         return LivePagedListBuilder<Int, Drawable>(
             ImagesDataSourceFactory(contentResolver, context), config

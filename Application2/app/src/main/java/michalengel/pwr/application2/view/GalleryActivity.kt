@@ -11,20 +11,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_scrolling.*
-import kotlinx.android.synthetic.main.content_scrolling.*
+import kotlinx.android.synthetic.main.activity_gallery.*
+import kotlinx.android.synthetic.main.content_gallery.*
 import michalengel.pwr.application2.view.viewmodels.ImagesViewModel
 import org.koin.android.architecture.ext.viewModel
 
 
-class ScrollingActivity : AppCompatActivity() {
+class GalleryActivity : AppCompatActivity() {
     private val viewModel by viewModel<ImagesViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(michalengel.pwr.application2.R.layout.activity_scrolling)
+        setContentView(michalengel.pwr.application2.R.layout.activity_gallery)
         setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
