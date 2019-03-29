@@ -20,6 +20,7 @@ import org.koin.android.architecture.ext.viewModel
 
 class GalleryActivity : AppCompatActivity() {
     private val viewModel by viewModel<ImagesViewModel>()
+    private val TAG = this::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +35,8 @@ class GalleryActivity : AppCompatActivity() {
             thumbnailsList.layoutManager = GridLayoutManager(this, 4)
             val adapter = ThumbnailAdapter()
             thumbnailsList.adapter = adapter
-            viewModel.loadThumbnails()
-            viewModel.thumbnails.observe(this, Observer {
+            viewModel.loadImages()
+            viewModel.images.observe(this, Observer {
                 adapter.submitList(it)
             })
         }
@@ -91,9 +92,5 @@ class GalleryActivity : AppCompatActivity() {
             Log.v(TAG, "Permission is granted")
             return true
         }
-    }
-
-    companion object {
-        private val TAG = this::class.java.simpleName
     }
 }

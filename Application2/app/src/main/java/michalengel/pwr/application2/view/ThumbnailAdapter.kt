@@ -10,8 +10,9 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import michalengel.pwr.application2.R
+import michalengel.pwr.application2.data.Image
 
-class ThumbnailAdapter : PagedListAdapter<Drawable, ThumbnailViewHolder>(PathDiffUtil){
+class ThumbnailAdapter : PagedListAdapter<Image, ThumbnailViewHolder>(PathDiffUtil) {
     lateinit var context: Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThumbnailViewHolder {
         context = parent.context
@@ -28,12 +29,13 @@ class ThumbnailAdapter : PagedListAdapter<Drawable, ThumbnailViewHolder>(PathDif
         Log.d(this::class.java.simpleName, "position: $position")
         holder.bindTo(getItem(position), context)
     }
-    object PathDiffUtil : DiffUtil.ItemCallback<Drawable>() {
-        override fun areItemsTheSame(oldItem: Drawable, newItem: Drawable): Boolean {
+
+    object PathDiffUtil : DiffUtil.ItemCallback<Image>() {
+        override fun areItemsTheSame(oldItem: Image, newItem: Image): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: Drawable, newItem: Drawable): Boolean {
+        override fun areContentsTheSame(oldItem: Image, newItem: Image): Boolean {
             return oldItem == newItem
         }
     }
