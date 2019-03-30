@@ -1,16 +1,14 @@
 package michalengel.pwr.application2.data
 
 import android.content.ContentResolver
-import android.content.Context
-import android.graphics.drawable.Drawable
-import android.provider.BaseColumns
 import android.provider.MediaStore
 import android.util.Log
 import androidx.paging.DataSource
 import androidx.paging.PositionalDataSource
+import michalengel.pwr.application2.model.Image
 
 
-class ImagesDataSource(private val contentResolver: ContentResolver, val context: Context) :
+class ImagesDataSource(private val contentResolver: ContentResolver) :
     PositionalDataSource<Image>() {
     companion object {
         private const val TAG = "ImageDataSource"
@@ -20,7 +18,7 @@ class ImagesDataSource(private val contentResolver: ContentResolver, val context
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Image>) {
         Log.d(TAG, "startPosition = ${params.startPosition}")
         Log.d(TAG, "loadSize = ${params.loadSize}")
-        callback.onResult(getThumbnails(params.loadSize, params.startPosition))
+        callback.onResult(getImages(params.loadSize, params.startPosition))
     }
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Image>) {
@@ -29,18 +27,20 @@ class ImagesDataSource(private val contentResolver: ContentResolver, val context
             "loadInitial, loadsize: ${params.requestedLoadSize}, startPosition: ${params.requestedStartPosition}"
         )
         callback.onResult(
-            getThumbnails(params.requestedLoadSize, params.requestedStartPosition),
+            getImages(params.requestedLoadSize, params.requestedStartPosition),
             0
         )
     }
 
-    private fun getThumbnails(limit: Int, offset: Int): MutableList<Image> {
+    private fun getImages(limit: Int, offset: Int): MutableList<Image> {
         Log.d(TAG, "limit = $limit, offset = $offset")
 
         val PROJECTION: Array<String> = arrayOf(
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media.DATE_TAKEN,
-            MediaStore.Images.Media.DESCRIPTION)
+            MediaStore.Images.Media.DESCRIPTION,
+            MediaStore.Images.Media.BUCKET_ID
+        )
 
         val cursor = contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -58,16 +58,18 @@ class ImagesDataSource(private val contentResolver: ContentResolver, val context
             val path = cursor.getString(cursor.getColumnIndexOrThrow(PROJECTION[0]))
             val dateTaken = cursor.getString(cursor.getColumnIndexOrThrow(PROJECTION[1]))
             val description = cursor.getString(cursor.getColumnIndexOrThrow(PROJECTION[2]))
-            images.add(Image(path, dateTaken, description))
+            val id = cursor.getLong(cursor.getColumnIndexOrThrow(PROJECTION[3]))
+            images.add(Image(id, path, dateTaken, description))
             cursor.moveToNext()
         }
         cursor.close()
         return images
     }
-    class ImagesDataSourceFactory(private val contentResolver: ContentResolver, private val context: Context) :
+
+    class ImagesDataSourceFactory(private val contentResolver: ContentResolver) :
         DataSource.Factory<Int, Image>() {
         override fun create(): DataSource<Int, Image> {
-            return ImagesDataSource(contentResolver, context)
+            return ImagesDataSource(contentResolver)
         }
     }
 }

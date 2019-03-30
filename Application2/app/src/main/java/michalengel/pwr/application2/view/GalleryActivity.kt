@@ -4,42 +4,53 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcel
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_gallery.*
 import kotlinx.android.synthetic.main.content_gallery.*
-import michalengel.pwr.application2.view.viewmodels.ImagesViewModel
+import michalengel.pwr.application2.R
+import michalengel.pwr.application2.model.Image
+import michalengel.pwr.application2.view.fragments.DetailViewFragment
+import michalengel.pwr.application2.view_model.ImagesViewModel
 import org.koin.android.architecture.ext.viewModel
 
 
 class GalleryActivity : AppCompatActivity() {
     private val viewModel by viewModel<ImagesViewModel>()
-    private val TAG = this::class.java.simpleName
+    private val TAG = "GalleryActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(michalengel.pwr.application2.R.layout.activity_gallery)
         setSupportActionBar(toolbar)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
-        if(isReadStoragePermissionGranted()) {
-            thumbnailsList.layoutManager = GridLayoutManager(this, 4)
-            val adapter = ThumbnailAdapter()
-            thumbnailsList.adapter = adapter
-            viewModel.loadImages()
+        if (isReadStoragePermissionGranted()) {
+            imagesRecyclerView.layoutManager = GridLayoutManager(this, 4)
+            val adapter = ThumbnailAdapter().apply {
+                onClickListener = {
+                    Log.d(TAG, "received onClick image: $it")
+                    viewModel.select(it)
+                    moveToDetailView()
+                }
+            }
+            imagesRecyclerView.adapter = adapter
             viewModel.images.observe(this, Observer {
                 adapter.submitList(it)
             })
         }
+    }
+
+    fun moveToDetailView() {
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_container, DetailViewFragment.newInstance())
+            .commit()
     }
 
 

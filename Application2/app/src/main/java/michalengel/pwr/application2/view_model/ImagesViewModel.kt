@@ -1,16 +1,22 @@
-package michalengel.pwr.application2.view.viewmodels
+package michalengel.pwr.application2.view_model
 
 import android.content.ContentResolver
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import michalengel.pwr.application2.data.Image
+import michalengel.pwr.application2.model.Image
 import michalengel.pwr.application2.data.ImagesDataSource
 
-class ImagesViewModel(private val contentResolver: ContentResolver, private val context: Context) : ViewModel() {
+class ImagesViewModel(private val contentResolver: ContentResolver) : ViewModel() {
     val images: LiveData<PagedList<Image>> = loadImages()
+    val selected = MutableLiveData<Image?>()
+
+    fun select(image: Image?) {
+        selected.value = image
+    }
 
 
     fun loadImages(): LiveData<PagedList<Image>> {
@@ -19,7 +25,7 @@ class ImagesViewModel(private val contentResolver: ContentResolver, private val 
             .setEnablePlaceholders(false)
             .build()
         return LivePagedListBuilder<Int, Image>(
-            ImagesDataSource.ImagesDataSourceFactory(contentResolver, context), config
+            ImagesDataSource.ImagesDataSourceFactory(contentResolver), config
         ).build()
     }
     companion object {
