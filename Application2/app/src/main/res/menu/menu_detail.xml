@@ -10,6 +10,7 @@
     <item android:id="@+id/action_item_set_as_wallpaper"
           android:title="@string/action_set_as_wallpaper"
           android:orderInCategory="200"
-          android:icon="@drawable/ic_wallpaper_black_24dp"
+          android:icon="@drawable/ic_wallpaper_white_24dp"
+          android:iconTint="@color/design_default_color_background"
           app:showAsAction="ifRoom"/>
 </menu>
