@@ -4,71 +4,46 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcel
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_gallery.*
-import kotlinx.android.synthetic.main.content_gallery.*
 import michalengel.pwr.application2.R
-import michalengel.pwr.application2.model.Image
 import michalengel.pwr.application2.view.fragments.DetailViewFragment
+import michalengel.pwr.application2.view.fragments.MasterViewFragment
 import michalengel.pwr.application2.view_model.ImagesViewModel
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.architecture.ext.getViewModel
 
 
-class GalleryActivity : AppCompatActivity() {
-    private val viewModel by viewModel<ImagesViewModel>()
+class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentInteractionListener {
     private val TAG = "GalleryActivity"
+    private lateinit var viewModel: ImagesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = getViewModel<ImagesViewModel>()
         setContentView(michalengel.pwr.application2.R.layout.activity_gallery)
         setSupportActionBar(toolbar)
+
         if (isReadStoragePermissionGranted()) {
-            imagesRecyclerView.layoutManager = GridLayoutManager(this, 4)
-            val adapter = ThumbnailAdapter().apply {
-                onClickListener = {
-                    Log.d(TAG, "received onClick image: $it")
-                    viewModel.select(it)
-                    moveToDetailView()
-                }
-            }
-            imagesRecyclerView.adapter = adapter
-            viewModel.images.observe(this, Observer {
-                adapter.submitList(it)
-            })
+            instantiateMasterViewFragment()
         }
     }
-
-    fun moveToDetailView() {
+    private fun instantiateMasterViewFragment() {
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container, DetailViewFragment.newInstance())
+            .add(R.id.fragment_container, MasterViewFragment.newInstance())
             .commit()
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(michalengel.pwr.application2.R.menu.menu_scrolling, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        return when (item.itemId) {
-            michalengel.pwr.application2.R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
+    override fun onImagePressed() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, DetailViewFragment.newInstance())
+            .addToBackStack("detailView")
+            .commit()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

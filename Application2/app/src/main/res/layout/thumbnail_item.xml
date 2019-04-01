@@ -4,6 +4,6 @@
 <ImageView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:padding="4dp"
-        android:id="@+id/thumbnail"
+        android:id="@+id/image"
         android:layout_width="100dp"
         android:layout_height="100dp"/>
