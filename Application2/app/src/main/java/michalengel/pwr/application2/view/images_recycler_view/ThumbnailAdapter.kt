@@ -1,4 +1,4 @@
-package michalengel.pwr.application2.view
+package michalengel.pwr.application2.view.images_recycler_view
 
 import android.content.Context
 import android.util.Log
@@ -10,7 +10,9 @@ import michalengel.pwr.application2.R
 import michalengel.pwr.application2.model.Image
 
 
-class ThumbnailAdapter : PagedListAdapter<Image, ThumbnailViewHolder>(PathDiffUtil) {
+class ThumbnailAdapter : PagedListAdapter<Image, ThumbnailViewHolder>(
+    PathDiffUtil
+) {
     lateinit var context: Context
     var onClickListener: ((Image?) -> Unit)? = null
 

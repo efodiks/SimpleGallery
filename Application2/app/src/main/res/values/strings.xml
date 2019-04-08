@@ -3,4 +3,7 @@
     <string name="action_share">Share</string>
     <string name="action_set_as_wallpaper">Set as wallpaper</string>
     <string name="file_provider_authority" translatable="false">michalengel.pwr.application2.fileprovider</string>
+    <string name="action_grid_layout">Change to grid view</string>
+    <string name="action_linear_layout">Change to list view</string>
+    <string name="action_choose_folder">Choose folder</string>
 </resources>

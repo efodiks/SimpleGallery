@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="michalengel.pwr.application2.view.fragments.MasterViewFragment">
+    <item android:id="@+id/action_grid_layout"
+          android:title="@string/action_grid_layout"
+          android:orderInCategory="200"
+          android:icon="@drawable/ic_grid_on_white_24dp"
+          app:showAsAction="ifRoom"/>
+</menu>

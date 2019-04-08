@@ -10,14 +10,15 @@ import androidx.paging.PagedList
 import michalengel.pwr.application2.model.Image
 import michalengel.pwr.application2.data.ImagesDataSource
 
-class ImagesViewModel(private val contentResolver: ContentResolver) : ViewModel() {
+class ImagesViewModel(val contentResolver: ContentResolver) : ViewModel() {
     val images: LiveData<PagedList<Image>> = loadImages()
     val selected = MutableLiveData<Image?>()
+    private val dataSourceFactory: ImagesDataSource.ImagesDataSourceFactory =
+        ImagesDataSource.ImagesDataSourceFactory(contentResolver)
 
     fun select(image: Image?) {
         selected.value = image
     }
-
 
     fun loadImages(): LiveData<PagedList<Image>> {
         val config = PagedList.Config.Builder()
@@ -28,6 +29,7 @@ class ImagesViewModel(private val contentResolver: ContentResolver) : ViewModel(
             ImagesDataSource.ImagesDataSourceFactory(contentResolver), config
         ).build()
     }
+
     companion object {
         const val TAG = "ImagesViewModel"
     }
