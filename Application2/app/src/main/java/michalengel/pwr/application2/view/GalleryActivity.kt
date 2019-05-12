@@ -31,7 +31,7 @@ class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentIntera
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = getViewModel<ImagesViewModel>()
-        setContentView(michalengel.pwr.application2.R.layout.activity_gallery)
+        setContentView(R.layout.activity_gallery)
         setSupportActionBar(toolbar)
 
         if (isReadStoragePermissionGranted()) {
@@ -82,10 +82,10 @@ class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentIntera
             return
         }
         val uri = data.data
-        val pickedDirectory = DocumentFile.fromTreeUri(applicationContext, uri)!!
+        val pickedDirectory = DocumentFile.fromTreeUri(applicationContext, uri!!)!!
         Log.d(TAG, "picked dir = $pickedDirectory")
         viewModelUri.changeRootDocument(pickedDirectory)
-        viewModelUri.imagesUriList.value?.get(0)
+        //viewModelUri.imagesUriList.value!!.get(0)
     }
 
     override fun onRequestPermissionsResult(

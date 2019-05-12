@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_master_view.*
 import kotlinx.android.synthetic.main.fragment_master_view.view.*
 import michalengel.pwr.application2.R
 import michalengel.pwr.application2.view.images_recycler_view.ThumbnailAdapter
+import michalengel.pwr.application2.view_model.ImagesUrisViewModel
 import michalengel.pwr.application2.view_model.ImagesViewModel
 import org.koin.android.architecture.ext.sharedViewModel
 
@@ -29,7 +30,7 @@ import org.koin.android.architecture.ext.sharedViewModel
  *
  */
 class MasterViewFragment : Fragment() {
-    private val viewModel by sharedViewModel<ImagesViewModel>()
+    private val viewModel by sharedViewModel<ImagesUrisViewModel>()
     private var listener: OnFragmentInteractionListener? = null
     private val TAG = "MasterViewFragment"
     private var isGridLayoutManager: Boolean = true
@@ -39,10 +40,7 @@ class MasterViewFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_master_view, container, false)
         Log.d(TAG, "Inflating view")
@@ -59,7 +57,7 @@ class MasterViewFragment : Fragment() {
             }
         }
         view.imagesRecyclerView.adapter = adapter
-        viewModel.images.observe(this, Observer {
+        viewModel.imagesUriList.observe(this, Observer {
             adapter.submitList(it)
         })
         return view

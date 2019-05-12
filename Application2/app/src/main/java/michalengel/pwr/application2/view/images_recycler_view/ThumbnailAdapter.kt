@@ -1,6 +1,7 @@
 package michalengel.pwr.application2.view.images_recycler_view
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,11 +11,11 @@ import michalengel.pwr.application2.R
 import michalengel.pwr.application2.model.Image
 
 
-class ThumbnailAdapter : PagedListAdapter<Image, ThumbnailViewHolder>(
+class ThumbnailAdapter : PagedListAdapter<Uri, ThumbnailViewHolder>(
     PathDiffUtil
 ) {
     lateinit var context: Context
-    var onClickListener: ((Image?) -> Unit)? = null
+    var onClickListener: ((Uri?) -> Unit)? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThumbnailViewHolder {
@@ -31,12 +32,12 @@ class ThumbnailAdapter : PagedListAdapter<Image, ThumbnailViewHolder>(
         holder.bindTo(getItem(position), context)
     }
 
-    object PathDiffUtil : DiffUtil.ItemCallback<Image>() {
-        override fun areItemsTheSame(oldItem: Image, newItem: Image): Boolean {
+    object PathDiffUtil : DiffUtil.ItemCallback<Uri>() {
+        override fun areItemsTheSame(oldItem: Uri, newItem: Uri): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: Image, newItem: Image): Boolean {
+        override fun areContentsTheSame(oldItem: Uri, newItem: Uri): Boolean {
             return oldItem == newItem
         }
     }

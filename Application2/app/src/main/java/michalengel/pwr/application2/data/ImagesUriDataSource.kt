@@ -10,25 +10,25 @@ import androidx.paging.PositionalDataSource
 class ImagesUriDataSource(val rootDocumentFile: DocumentFile?) : PositionalDataSource<Uri>() {
     lateinit var imagesUris: List<Uri>
     val TAG = "ImagesUriDataSource"
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Uri>) {
-        if (imagesUris.isNotEmpty())
-            callback.onResult(imagesUris.subList(params.startPosition, params.startPosition + params.loadSize))
-    }
 
-    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Uri>) {
+    private fun loadInternal(startPosition: Int, loadSize: Int): List<Uri> {
         imagesUris =
             rootDocumentFile?.listFiles()
                 ?.filter { it.isFile && it.type?.startsWith("image") ?: false }
                 ?.map { it.uri } ?: emptyList()
-        Log.d(TAG, "$imagesUris")
-        if (imagesUris.isNotEmpty())
-            callback.onResult(
-                imagesUris.subList(
-                    params.requestedStartPosition,
-                    params.requestedStartPosition + params.requestedLoadSize
-                ),
-                0
-            )
+        if(startPosition >= imagesUris.size) return emptyList()
+        if(startPosition + loadSize > imagesUris.size) return imagesUris
+        return imagesUris.subList(startPosition, startPosition + loadSize)
+    }
+
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Uri>) {
+        callback.onResult(imagesUris.subList(params.startPosition, params.startPosition + params.loadSize))
+    }
+
+    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Uri>) {
+        val startPosition = params.requestedStartPosition
+        val loadSize = params.requestedLoadSize
+        callback.onResult(loadInternal(startPosition, loadSize), 0, imagesUris.size)
     }
     class ImageURIsDataSourceFactory : DataSource.Factory<Int, Uri>() {
         val sourceLiveData = MutableLiveData<ImagesUriDataSource>()

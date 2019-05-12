@@ -22,6 +22,7 @@ import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.fragment_detail_view.*
 import michalengel.pwr.application2.R
 import michalengel.pwr.application2.model.Image
+import michalengel.pwr.application2.view_model.ImagesUrisViewModel
 import michalengel.pwr.application2.view_model.ImagesViewModel
 import org.koin.android.architecture.ext.sharedViewModel
 import java.io.File
@@ -29,9 +30,8 @@ import java.io.IOException
 
 
 class DetailViewFragment : Fragment() {
-    private val viewModel by sharedViewModel<ImagesViewModel>()
+    private val viewModel by sharedViewModel<ImagesUrisViewModel>()
     val TAG = "DetailViewFragment"
-    var currentPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +49,10 @@ class DetailViewFragment : Fragment() {
         })
     }
 
-    private fun setImage(image: Image?) {
-        Glide.with(context ?: throw IllegalStateException())
-            .load(image?.path)
+    private fun setImage(uri: Uri?) {
+        Glide.with(context!!)
+            .load(uri)
             .into(detail_image)
-
     }
 
     override fun onDestroyView() {
@@ -67,20 +66,10 @@ class DetailViewFragment : Fragment() {
         val shareActionProvider =
             MenuItemCompat.getActionProvider(menu.findItem(R.id.action_item_share)) as androidx.appcompat.widget.ShareActionProvider
         viewModel.selected.observe(this, Observer {
-            currentPath = it?.path
-            val currentImageUri = FileProvider.getUriForFile(
-                context ?: throw java.lang.IllegalStateException(),
-                getString(R.string.file_provider_authority),
-                File(it?.path)
-            )
-
-            Log.d(TAG, "setting shareIntent, image = $it, uri = $currentImageUri")
-            Log.d(TAG, "actionProvider = $shareActionProvider")
-
             shareActionProvider.setShareIntent(
                 Intent(Intent.ACTION_SEND).apply {
                     type = "image/*"
-                    putExtra(Intent.EXTRA_STREAM, currentImageUri)
+                    putExtra(Intent.EXTRA_STREAM, it)
                 }
             )
         })
@@ -89,22 +78,21 @@ class DetailViewFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_item_set_as_wallpaper -> {
-                onSetAsWallpaper()
                 Log.v(TAG, "setting wallpaper")
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
-    fun onSetAsWallpaper() {
-        val wallpaperManager = WallpaperManager.getInstance(context)
-        try {
-            wallpaperManager.setBitmap(BitmapFactory.decodeFile(currentPath))
-            Toast.makeText(context, "Setting wallpaper!", Toast.LENGTH_LONG).show()
-        } catch (e: IOException) {
-            Log.e(TAG, "IOException, uri = $currentPath, exc = $e")
-        }
-    }
+//    fun onSetAsWallpaper() {
+//        val wallpaperManager = WallpaperManager.getInstance(context)
+//        try {
+//            wallpaperManager.setBitmap(BitmapFactory.decodeFile(currentPath))
+//            Toast.makeText(context, "Setting wallpaper!", Toast.LENGTH_LONG).show()
+//        } catch (e: IOException) {
+//            Log.e(TAG, "IOException, uri = $currentPath, exc = $e")
+//        }
+//    }
 
     companion object {
         fun newInstance(): DetailViewFragment {
