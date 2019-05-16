@@ -49,13 +49,11 @@ class MasterViewFragment : Fragment() {
             if (isGridLayoutManager) GridLayoutManager(listener as Context, 4)
             else LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        val adapter = ThumbnailAdapter().apply {
-            onClickListener = {
+        val adapter = ThumbnailAdapter{
                 Log.d(TAG, "received onClick image: $it")
                 viewModel.select(it)
-                listener?.onDetailFragmentImagePressed()
+                listener!!.onDetailFragmentImagePressed()
             }
-        }
         view.imagesRecyclerView.adapter = adapter
         viewModel.imagesUriList.observe(this, Observer {
             adapter.submitList(it)

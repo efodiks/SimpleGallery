@@ -45,7 +45,7 @@ class DetailViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.selected.observe(this, Observer {
-            setImage(it)
+            if(it != null) setImage(viewModel.imagesUriList.value?.get(it))
         })
     }
 

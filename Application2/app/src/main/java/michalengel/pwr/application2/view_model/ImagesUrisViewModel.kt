@@ -13,7 +13,7 @@ import michalengel.pwr.application2.data.ImagesUriDataSource
 class ImagesUrisViewModel : ViewModel() {
     val TAG = "ImagesUrisViewModel"
     private val imagesUrisDataSourceFactory = ImagesUriDataSource.ImageURIsDataSourceFactory()
-    val selected: MutableLiveData<Uri?> = MutableLiveData()
+    val selected: MutableLiveData<Int?> = MutableLiveData()
     val imagesUriList: LiveData<PagedList<Uri>> =
         LivePagedListBuilder<Int, Uri>(imagesUrisDataSourceFactory,
             PagedList.Config.Builder()
@@ -26,5 +26,5 @@ class ImagesUrisViewModel : ViewModel() {
         imagesUrisDataSourceFactory.latestRootDocumentFile = rootDocument
         imagesUrisDataSourceFactory.sourceLiveData.value?.invalidate()
     }
-    fun select(uri: Uri?) = selected.postValue(uri)
+    fun select(int: Int?) = selected.postValue(int)
 }
