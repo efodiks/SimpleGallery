@@ -20,7 +20,7 @@ class DetailViewFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
         val view = inflater.inflate(R.layout.fragment_detail_view, container, false)
-        view.photos_viewpager.adapter = ViewPagerAdapter(context!!, viewModel.imagesUriList.value!!)
+        view.photos_viewpager.adapter = ViewPagerAdapter(fragmentManager!!, viewModel.imagesUriList.value!!)
         view.photos_viewpager.currentItem = viewModel.selected.value!!
         return view
     }
@@ -36,6 +36,10 @@ class DetailViewFragment : Fragment(){
                 //putExtra(Intent.EXTRA_STREAM
             }
         )
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {

@@ -31,12 +31,13 @@ class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentIntera
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = getViewModel<ImagesViewModel>()
         setContentView(R.layout.activity_gallery)
         setSupportActionBar(toolbar)
-
-        if (isReadStoragePermissionGranted()) {
-            instantiateMasterViewFragment()
+        viewModel = getViewModel<ImagesViewModel>()
+        if (savedInstanceState == null) {
+            if (isReadStoragePermissionGranted()) {
+                instantiateMasterViewFragment()
+            }
         }
     }
 

@@ -11,12 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.viewpager_item.*
+import kotlinx.android.synthetic.main.viewpager_item.view.*
 import michalengel.pwr.application2.R
 import michalengel.pwr.application2.view_model.ImagesUrisViewModel
 import org.koin.android.architecture.ext.sharedViewModel
 
 
-class ViewPagerItem(val imageUri: Uri) : Fragment() {
+class ViewPagerItem : Fragment() {
     val TAG = "ViewPagerItem"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,20 +26,13 @@ class ViewPagerItem(val imageUri: Uri) : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.viewpager_item, container, false)
-
+        val imageUri = arguments!!.getParcelable<Uri>("imageUri")
+        val view = inflater.inflate(R.layout.viewpager_item, container, false)
+        Glide.with(context!!)
+            .load(imageUri)
+            .into(view.detail_image)
+        return view
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d(TAG, "destroying view")
-    }
-
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -60,8 +54,8 @@ class ViewPagerItem(val imageUri: Uri) : Fragment() {
 //    }
 
     companion object {
-        fun newInstance(imageUri: Uri): ViewPagerItem {
-            return ViewPagerItem(imageUri)
+        fun newInstance(): ViewPagerItem {
+            return ViewPagerItem()
         }
     }
 }
