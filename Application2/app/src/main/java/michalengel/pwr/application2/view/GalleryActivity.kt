@@ -15,6 +15,7 @@ import androidx.documentfile.provider.DocumentFile
 import kotlinx.android.synthetic.main.activity_gallery.*
 import michalengel.pwr.application2.R
 import michalengel.pwr.application2.view.fragments.DetailViewFragment
+import michalengel.pwr.application2.view.fragments.ViewPagerItem
 import michalengel.pwr.application2.view.fragments.MasterViewFragment
 import michalengel.pwr.application2.view_model.ImagesUrisViewModel
 import michalengel.pwr.application2.view_model.ImagesViewModel
