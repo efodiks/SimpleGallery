@@ -1,4 +1,4 @@
-package michalengel.pwr.application2.view.fragments
+package michalengel.pwr.application2.view.gallery_view
 
 import android.content.Context
 import android.os.Bundle
@@ -12,10 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_master_view.*
 import kotlinx.android.synthetic.main.fragment_master_view.view.*
 import michalengel.pwr.application2.R
-import michalengel.pwr.application2.view.images_recycler_view.ThumbnailAdapter
 import michalengel.pwr.application2.view_model.ImagesUrisViewModel
-import michalengel.pwr.application2.view_model.ImagesViewModel
-import org.koin.android.architecture.ext.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,11 +47,11 @@ class MasterViewFragment : Fragment() {
             if (isGridLayoutManager) GridLayoutManager(listener as Context, 4)
             else LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        val adapter = ThumbnailAdapter{
-                Log.d(TAG, "received onClick image: $it")
-                viewModel.select(it)
-                listener!!.onDetailFragmentImagePressed()
-            }
+        val adapter = ThumbnailAdapter {
+            Log.d(TAG, "received onClick image: $it")
+            viewModel.select(it)
+            listener!!.onDetailFragmentImagePressed()
+        }
         view.imagesRecyclerView.adapter = adapter
         viewModel.imagesUriList.observe(this, Observer {
             adapter.submitList(it)

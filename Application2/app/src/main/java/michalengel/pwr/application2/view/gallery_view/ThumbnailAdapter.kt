@@ -1,4 +1,4 @@
-package michalengel.pwr.application2.view.images_recycler_view
+package michalengel.pwr.application2.view.gallery_view
 
 import android.content.Context
 import android.net.Uri
@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import michalengel.pwr.application2.R
-import michalengel.pwr.application2.model.Image
-import michalengel.pwr.application2.view_model.ImagesViewModel.Companion.TAG
 
 
 class ThumbnailAdapter(private val onClickListener: ((Int?) -> Unit)) : PagedListAdapter<Uri, ThumbnailViewHolder>(
@@ -17,6 +15,7 @@ class ThumbnailAdapter(private val onClickListener: ((Int?) -> Unit)) : PagedLis
 ) {
 
     lateinit var context: Context
+    val TAG = "UriPagedListAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThumbnailViewHolder {
         context = parent.context
@@ -25,7 +24,7 @@ class ThumbnailAdapter(private val onClickListener: ((Int?) -> Unit)) : PagedLis
             parent,
             false
         )
-        return ThumbnailViewHolder(view){
+        return ThumbnailViewHolder(view) {
             onClickListener.invoke(it)
             Log.d(TAG, "invoking callback")
         }

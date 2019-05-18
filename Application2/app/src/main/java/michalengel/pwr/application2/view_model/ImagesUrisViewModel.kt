@@ -1,7 +1,6 @@
 package michalengel.pwr.application2.view_model
 
 import android.net.Uri
-import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

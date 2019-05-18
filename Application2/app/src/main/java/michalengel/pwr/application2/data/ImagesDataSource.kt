@@ -1,27 +1,29 @@
 package michalengel.pwr.application2.data
 
 import android.content.ContentResolver
+import android.media.Image
+import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.paging.DataSource
 import androidx.paging.PositionalDataSource
-import michalengel.pwr.application2.model.Image
 
 
 class ImagesDataSource(private val contentResolver: ContentResolver) :
-    PositionalDataSource<Image>() {
+    PositionalDataSource<Uri>() {
+    //TODO
     companion object {
         private const val TAG = "ImageDataSource"
     }
 
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Image>) {
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Uri>) {
         Log.d(TAG, "startPosition = ${params.startPosition}")
         Log.d(TAG, "loadSize = ${params.loadSize}")
         callback.onResult(getImages(params.loadSize, params.startPosition))
     }
 
-    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Image>) {
+    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Uri>) {
         Log.d(
             TAG,
             "loadInitial, loadsize: ${params.requestedLoadSize}, startPosition: ${params.requestedStartPosition}"
@@ -32,7 +34,7 @@ class ImagesDataSource(private val contentResolver: ContentResolver) :
         )
     }
 
-    private fun getImages(limit: Int, offset: Int): MutableList<Image> {
+    private fun getImages(limit: Int, offset: Int): MutableList<Uri> {
         Log.d(TAG, "limit = $limit, offset = $offset")
 
         val PROJECTION: Array<String> = arrayOf(
@@ -50,16 +52,17 @@ class ImagesDataSource(private val contentResolver: ContentResolver) :
             "${MediaStore.Images.Media.DATE_TAKEN} DESC LIMIT $limit OFFSET $offset"
         ) ?: throw NullPointerException("empty cursor in $TAG")
 
-        val images = mutableListOf<Image>()
+        val images = mutableListOf<Uri>()
 
         cursor.moveToFirst()
         Log.d(TAG, "cursor size: ${cursor.count}")
         while (!cursor.isAfterLast) {
+            //TODO
             val path = cursor.getString(cursor.getColumnIndexOrThrow(PROJECTION[0]))
             val dateTaken = cursor.getString(cursor.getColumnIndexOrThrow(PROJECTION[1]))
             val description = cursor.getString(cursor.getColumnIndexOrThrow(PROJECTION[2]))
             val id = cursor.getLong(cursor.getColumnIndexOrThrow(PROJECTION[3]))
-            images.add(Image(id, path, dateTaken, description))
+            //images.add(Image(id, path, dateTaken, description))
             cursor.moveToNext()
         }
         cursor.close()
@@ -67,8 +70,8 @@ class ImagesDataSource(private val contentResolver: ContentResolver) :
     }
 
     class ImagesDataSourceFactory(private val contentResolver: ContentResolver) :
-        DataSource.Factory<Int, Image>() {
-        override fun create(): DataSource<Int, Image> {
+        DataSource.Factory<Int, Uri>() {
+        override fun create(): DataSource<Int, Uri> {
             return ImagesDataSource(contentResolver)
         }
     }

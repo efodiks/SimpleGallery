@@ -1,4 +1,4 @@
-package michalengel.pwr.application2.view.images_recycler_view
+package michalengel.pwr.application2.view.gallery_view
 
 import android.content.Context
 import android.net.Uri

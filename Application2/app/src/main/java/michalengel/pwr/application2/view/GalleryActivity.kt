@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -14,26 +13,21 @@ import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
 import kotlinx.android.synthetic.main.activity_gallery.*
 import michalengel.pwr.application2.R
-import michalengel.pwr.application2.view.fragments.DetailViewFragment
-import michalengel.pwr.application2.view.fragments.ViewPagerItem
-import michalengel.pwr.application2.view.fragments.MasterViewFragment
+import michalengel.pwr.application2.view.single_image_view.DetailViewFragment
+import michalengel.pwr.application2.view.gallery_view.MasterViewFragment
 import michalengel.pwr.application2.view_model.ImagesUrisViewModel
-import michalengel.pwr.application2.view_model.ImagesViewModel
-import org.koin.android.architecture.ext.getViewModel
-import org.koin.android.architecture.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentInteractionListener {
     private val TAG = "GalleryActivity"
     private val PICK_FOLDER_CODE = 1
-    private lateinit var viewModel: ImagesViewModel
     private val viewModelUri by viewModel<ImagesUrisViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery)
         setSupportActionBar(toolbar)
-        viewModel = getViewModel<ImagesViewModel>()
         if (savedInstanceState == null) {
             if (isReadStoragePermissionGranted()) {
                 instantiateMasterViewFragment()
@@ -87,7 +81,7 @@ class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentIntera
         val pickedDirectory = DocumentFile.fromTreeUri(applicationContext, uri!!)!!
         Log.d(TAG, "picked dir = $pickedDirectory")
         viewModelUri.changeRootDocument(pickedDirectory)
-        //viewModelUri.imagesUriList.value!!.get(0)
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(
@@ -113,18 +107,13 @@ class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentIntera
     }
 
     fun isReadStoragePermissionGranted(): Boolean {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG, "Permission is granted")
-                return true
-            } else {
-                Log.v(TAG, "Permission is revoked")
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 3)
-                return false
-            }
-        } else { //permission is automatically granted on sdk<23 upon installation
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             Log.v(TAG, "Permission is granted")
             return true
+        } else {
+            Log.v(TAG, "Permission is revoked")
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 3)
+            return false
         }
     }
 }

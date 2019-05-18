@@ -2,12 +2,18 @@ package michalengel.pwr.application2
 
 import android.app.Application
 import michalengel.pwr.application2.di.groupModule
-import org.koin.android.ext.android.startKoin
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        startKoin(this, listOf(groupModule))
+        startKoin {
+            androidLogger()
+            androidContext(this@App)
+            modules(listOf(groupModule))
+        }
     }
 
 
