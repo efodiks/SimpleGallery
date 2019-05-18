@@ -39,6 +39,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
+    //PhotoView
+    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
+
     // Koin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-scope:$koin_version"

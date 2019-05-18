@@ -40,15 +40,6 @@ class ViewPagerItem : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-//    fun onSetAsWallpaper() {
-//        val wallpaperManager = WallpaperManager.getInstance(context)
-//        try {
-//            wallpaperManager.setBitmap(BitmapFactory.decodeFile(currentPath))
-//            Toast.makeText(context, "Setting wallpaper!", Toast.LENGTH_LONG).show()
-//        } catch (e: IOException) {
-//            Log.e(TAG, "IOException, uri = $currentPath, exc = $e")
-//        }
-//    }
 
     companion object {
         fun newInstance(): ViewPagerItem {

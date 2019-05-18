@@ -31,7 +31,6 @@ class MasterViewFragment : Fragment() {
     private val viewModel by sharedViewModel<ImagesUrisViewModel>()
     private var listener: OnFragmentInteractionListener? = null
     private val TAG = "MasterViewFragment"
-    private var isGridLayoutManager: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +40,9 @@ class MasterViewFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_master_view, container, false)
-        Log.d(TAG, "Inflating view")
-        Log.d(TAG, "viewModel is $viewModel")
-        view.imagesRecyclerView.layoutManager =
-            if (isGridLayoutManager) GridLayoutManager(listener as Context, 4)
-            else LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+
+        view.imagesRecyclerView.layoutManager = GridLayoutManager(context, 2)
+
 
         val adapter = ThumbnailAdapter {
             Log.d(TAG, "received onClick image: $it")
@@ -62,7 +59,11 @@ class MasterViewFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         Log.d(TAG, "inflating options menu")
-        inflater.inflate(R.menu.menu_master, menu)
+        val view = inflater.inflate(R.menu.menu_master, menu)
+        menu.findItem(R.id.action_grid_layout).icon =
+            if (imagesRecyclerView.isGridLayout) resources.getDrawable(R.drawable.ic_view_list_white_24dp, null)
+            else resources.getDrawable(R.drawable.ic_grid_on_white_24dp, null)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -71,17 +72,11 @@ class MasterViewFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+
     private fun onChangeLayoutMenuItemClicked(item: MenuItem): Boolean {
-        //flip button isChecked
-        val isChecked = item.isChecked
-        Log.d(TAG, "item is $isChecked")
-        item.isChecked = !isChecked
-        //if item is checked, change layout to grid and icon to linear, else layout to linear and icon to grid
-        imagesRecyclerView.layoutManager =
-            if (isChecked) GridLayoutManager(context, 4)
-            else LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        imagesRecyclerView.swapLayoutManager()
         item.icon =
-            if (isChecked) resources.getDrawable(R.drawable.ic_view_list_white_24dp, null)
+            if (imagesRecyclerView.isGridLayout) resources.getDrawable(R.drawable.ic_view_list_white_24dp, null)
             else resources.getDrawable(R.drawable.ic_grid_on_white_24dp, null)
         return true
     }
@@ -118,6 +113,9 @@ class MasterViewFragment : Fragment() {
     }
 
     companion object {
+        private const val ARG_COL_COUNT = "COL_COUNT"
+        private const val ARG_IS_GRID_LAYOUT = "IS_GRID_LAYOUT"
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

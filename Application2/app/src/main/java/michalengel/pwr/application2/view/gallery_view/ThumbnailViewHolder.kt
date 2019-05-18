@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.android.synthetic.main.thumbnail_item.view.*
+import michalengel.pwr.application2.R
 
 class ThumbnailViewHolder(itemView: View, callback: ((Int?) -> Unit) ) : RecyclerView.ViewHolder(itemView) {
     private var imageView: ImageView = itemView.image
@@ -16,19 +17,18 @@ class ThumbnailViewHolder(itemView: View, callback: ((Int?) -> Unit) ) : Recycle
 
     init {
         itemView.setOnClickListener {
-            if (adapterPosition != RecyclerView.NO_POSITION) callback.invoke(layoutPosition)
-            Log.d(TAG, "item $layoutPosition clicked, callback = $callback")
+            if (adapterPosition != RecyclerView.NO_POSITION) callback.invoke(adapterPosition)
+            Log.d(TAG, "item $adapterPosition clicked, callback = $callback")
         }
     }
 
     fun bindTo(uri: Uri?, context: Context) {
         Log.d(TAG, "binding $uri to $imageView")
-        uri?.let {
             Glide.with(context)
-                .load(it)
+                .load(uri)
                 .thumbnail(0.1f)
-                .transition(DrawableTransitionOptions.withCrossFade())
+                .placeholder(R.drawable.ic_photo_primary_24dp)
+                .dontAnimate()
                 .into(imageView)
-        }
     }
 }

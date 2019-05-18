@@ -5,14 +5,14 @@ import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import michalengel.pwr.application2.R
 
 
 class ThumbnailAdapter(private val onClickListener: ((Int?) -> Unit)) : PagedListAdapter<Uri, ThumbnailViewHolder>(
-    PathDiffUtil
-) {
+    PathDiffUtil) {
 
     lateinit var context: Context
     val TAG = "UriPagedListAdapter"

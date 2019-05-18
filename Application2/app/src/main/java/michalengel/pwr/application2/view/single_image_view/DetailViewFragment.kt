@@ -66,14 +66,26 @@ class DetailViewFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_image_details) {
-            val uri = viewModel.imagesUriList.value!![viewModel.selected.value!!]!!
-            instantiateImageDetails(uri)
+        val uri = viewModel.imagesUriList.value!![viewModel.selected.value!!]!!
+        when(item.itemId) {
+            R.id.action_image_details -> instantiateImageDetails(uri)
+            R.id.action_item_set_as_wallpaper -> setAsWallpaper(uri)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    fun instantiateImageDetails(uri: Uri) {
+    private fun setAsWallpaper(uri: Uri) {
+        val intent = Intent(Intent.ACTION_ATTACH_DATA)
+            .apply {
+                addCategory(Intent.CATEGORY_DEFAULT)
+                setDataAndType(uri, "image/*")
+                putExtra("mimeType", "image/*")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+        startActivity(Intent.createChooser(intent, "Set as:"))
+    }
+
+    private fun instantiateImageDetails(uri: Uri) {
             fragmentManager!!.beginTransaction()
             .replace(R.id.fragment_container, ImageDetailFragment.newInstance(uri), "image_detail")
             .addToBackStack("image_detail")
