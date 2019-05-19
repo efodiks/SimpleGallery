@@ -2,13 +2,12 @@ package michalengel.pwr.application2.view.gallery_view
 
 import android.content.Context
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_master_view.*
 import kotlinx.android.synthetic.main.fragment_master_view.view.*
 import michalengel.pwr.application2.R
@@ -44,13 +43,14 @@ class MasterViewFragment : Fragment() {
         view.imagesRecyclerView.layoutManager = GridLayoutManager(context, 2)
 
 
-        val adapter = ThumbnailAdapter {
+        val adapter = GalleryScaleAdapter {
             Log.d(TAG, "received onClick image: $it")
             viewModel.select(it)
             listener!!.onDetailFragmentImagePressed()
         }
         view.imagesRecyclerView.adapter = adapter
         viewModel.imagesUriList.observe(this, Observer {
+            TransitionManager.beginDelayedTransition(view.imagesRecyclerView)
             adapter.submitList(it)
         })
         return view

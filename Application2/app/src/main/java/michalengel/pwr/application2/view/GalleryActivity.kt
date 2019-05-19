@@ -11,6 +11,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
+import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
 import kotlinx.android.synthetic.main.activity_gallery.*
 import michalengel.pwr.application2.R
 import michalengel.pwr.application2.view.single_image_view.DetailViewFragment

@@ -24,6 +24,10 @@ class ThumbnailViewHolder(itemView: View, callback: ((Int?) -> Unit) ) : Recycle
 
     fun bindTo(uri: Uri?, context: Context) {
         Log.d(TAG, "binding $uri to $imageView")
+            //val it = imageView
+            //it.layoutParams.width = Math.round((it.measuredWidth * scale))
+            //it.layoutParams.height = Math.round((it.measuredHeight * scale))
+
             Glide.with(context)
                 .load(uri)
                 .thumbnail(0.1f)

@@ -8,14 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import kotlinx.android.synthetic.main.thumbnail_item.view.*
 import michalengel.pwr.application2.R
 
 
-class ThumbnailAdapter(private val onClickListener: ((Int?) -> Unit)) : PagedListAdapter<Uri, ThumbnailViewHolder>(
+class GalleryScaleAdapter(private val onClickListener: ((Int?) -> Unit)) : PagedListAdapter<Uri, ThumbnailViewHolder>(
     PathDiffUtil) {
 
     lateinit var context: Context
     val TAG = "UriPagedListAdapter"
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThumbnailViewHolder {
         context = parent.context
@@ -24,6 +26,7 @@ class ThumbnailAdapter(private val onClickListener: ((Int?) -> Unit)) : PagedLis
             parent,
             false
         )
+
         return ThumbnailViewHolder(view) {
             onClickListener.invoke(it)
             Log.d(TAG, "invoking callback")
