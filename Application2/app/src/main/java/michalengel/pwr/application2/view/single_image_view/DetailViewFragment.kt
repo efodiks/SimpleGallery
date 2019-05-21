@@ -8,12 +8,14 @@ import android.view.*
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_detail_view.view.*
 import michalengel.pwr.application2.R
 import michalengel.pwr.application2.model.ImageDetailsProvider
 import michalengel.pwr.application2.view.single_image_view.image_details_view.ImageDetailFragment
+import michalengel.pwr.application2.view.single_image_view.image_details_view.ImageDetailFragmentArgs
 import michalengel.pwr.application2.view_model.ImagesUrisViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -67,7 +69,7 @@ class DetailViewFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val uri = viewModel.imagesUriList.value!![viewModel.selected.value!!]!!
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.action_image_details -> instantiateImageDetails(uri)
             R.id.action_item_set_as_wallpaper -> setAsWallpaper(uri)
         }
@@ -86,13 +88,7 @@ class DetailViewFragment : Fragment() {
     }
 
     private fun instantiateImageDetails(uri: Uri) {
-            fragmentManager!!.beginTransaction()
-            .replace(R.id.fragment_container, ImageDetailFragment.newInstance(uri), "image_detail")
-            .addToBackStack("image_detail")
-            .commit()
-    }
-
-    companion object {
-        fun newInstance(): DetailViewFragment = DetailViewFragment()
+        val action = DetailViewFragmentDirections.actionDetailViewFragmentToImageDetailFragment(uri)
+        findNavController().navigate(action)
     }
 }

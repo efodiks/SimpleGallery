@@ -13,5 +13,14 @@
     <fragment android:id="@+id/detailViewFragment"
               android:name="michalengel.pwr.application2.view.single_image_view.DetailViewFragment"
               android:label="DetailViewFragment"
-              tools:layout="@layout/fragment_detail_view"/>
+              tools:layout="@layout/fragment_detail_view">
+        <action android:id="@+id/action_detailViewFragment_to_imageDetailFragment"
+                app:destination="@id/imageDetailFragment"/>
+    </fragment>
+    <fragment android:id="@+id/imageDetailFragment"
+              android:name="michalengel.pwr.application2.view.single_image_view.image_details_view.ImageDetailFragment"
+              android:label="fragment_image_detail"
+              tools:layout="@layout/fragment_image_detail">
+        <argument android:name="imageUri" app:argType="android.net.Uri"/>
+    </fragment>
 </navigation>

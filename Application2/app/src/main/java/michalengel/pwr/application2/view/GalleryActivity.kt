@@ -20,7 +20,7 @@ import michalengel.pwr.application2.view_model.ImagesUrisViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentInteractionListener {
+class GalleryActivity : AppCompatActivity() {
     private val TAG = "GalleryActivity"
     private val PICK_FOLDER_CODE = 1
     private val viewModelUri by viewModel<ImagesUrisViewModel>()
@@ -29,26 +29,6 @@ class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentIntera
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery)
         setSupportActionBar(toolbar)
-//        if (savedInstanceState == null) {
-//            if (isReadStoragePermissionGranted()) {
-//                instantiateMasterViewFragment()
-//            }
-//        }
-    }
-
-    private fun instantiateMasterViewFragment() {
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragment_container, MasterViewFragment.newInstance())
-            .commit()
-    }
-
-    override fun onDetailFragmentImagePressed() {
-//        supportFragmentManager
-//            .beginTransaction()
-//            .replace(R.id.fragment_container, DetailViewFragment.newInstance())
-//            .addToBackStack("detailView")
-//            .commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
