@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation" app:startDestination="@id/masterViewFragment">
+
+    <fragment android:id="@+id/masterViewFragment"
+              android:name="michalengel.pwr.application2.view.gallery_view.MasterViewFragment"
+              android:label="MasterViewFragment"
+              tools:layout="@layout/fragment_master_view">
+        <action android:id="@+id/action_masterViewFragment_to_detailViewFragment"
+                app:destination="@id/detailViewFragment"/>
+    </fragment>
+    <fragment android:id="@+id/detailViewFragment"
+              android:name="michalengel.pwr.application2.view.single_image_view.DetailViewFragment"
+              android:label="DetailViewFragment"
+              tools:layout="@layout/fragment_detail_view"/>
+</navigation>

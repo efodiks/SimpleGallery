@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_master_view.*
 import kotlinx.android.synthetic.main.fragment_master_view.view.*
@@ -46,7 +47,8 @@ class MasterViewFragment : Fragment() {
         val adapter = GalleryScaleAdapter {
             Log.d(TAG, "received onClick image: $it")
             viewModel.select(it)
-            listener!!.onDetailFragmentImagePressed()
+            //listener!!.onDetailFragmentImagePressed()
+            view.findNavController().navigate(R.id.detailViewFragment)
         }
         view.imagesRecyclerView.adapter = adapter
         viewModel.imagesUriList.observe(this, Observer {
@@ -60,6 +62,7 @@ class MasterViewFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         Log.d(TAG, "inflating options menu")
         val view = inflater.inflate(R.menu.menu_master, menu)
+        //TODO work out changing icon
         menu.findItem(R.id.action_grid_layout).icon =
             if (imagesRecyclerView.isGridLayout) resources.getDrawable(R.drawable.ic_view_list_white_24dp, null)
             else resources.getDrawable(R.drawable.ic_grid_on_white_24dp, null)
@@ -74,7 +77,8 @@ class MasterViewFragment : Fragment() {
 
 
     private fun onChangeLayoutMenuItemClicked(item: MenuItem): Boolean {
-        imagesRecyclerView.swapLayoutManager()
+        //imagesRecyclerView.swapLayoutManager()
+        //TODO Icon and swapping columns
         item.icon =
             if (imagesRecyclerView.isGridLayout) resources.getDrawable(R.drawable.ic_view_list_white_24dp, null)
             else resources.getDrawable(R.drawable.ic_grid_on_white_24dp, null)

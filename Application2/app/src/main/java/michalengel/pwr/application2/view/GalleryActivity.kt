@@ -29,11 +29,11 @@ class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentIntera
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery)
         setSupportActionBar(toolbar)
-        if (savedInstanceState == null) {
-            if (isReadStoragePermissionGranted()) {
-                instantiateMasterViewFragment()
-            }
-        }
+//        if (savedInstanceState == null) {
+//            if (isReadStoragePermissionGranted()) {
+//                instantiateMasterViewFragment()
+//            }
+//        }
     }
 
     private fun instantiateMasterViewFragment() {
@@ -44,11 +44,11 @@ class GalleryActivity : AppCompatActivity(), MasterViewFragment.OnFragmentIntera
     }
 
     override fun onDetailFragmentImagePressed() {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, DetailViewFragment.newInstance())
-            .addToBackStack("detailView")
-            .commit()
+//        supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.fragment_container, DetailViewFragment.newInstance())
+//            .addToBackStack("detailView")
+//            .commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
