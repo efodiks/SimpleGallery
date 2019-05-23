@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_master_view.*
 import kotlinx.android.synthetic.main.fragment_master_view.view.*
