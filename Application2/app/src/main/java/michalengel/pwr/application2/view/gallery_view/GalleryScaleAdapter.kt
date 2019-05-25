@@ -4,7 +4,9 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentManager
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -12,7 +14,7 @@ import kotlinx.android.synthetic.main.thumbnail_item.view.*
 import michalengel.pwr.application2.R
 
 
-class GalleryScaleAdapter(private val onClickListener: ((Int?) -> Unit)) : PagedListAdapter<Uri, ThumbnailViewHolder>(
+class GalleryScaleAdapter(private val onClickListener: ((Int, View) -> Unit)) : PagedListAdapter<Uri, ThumbnailViewHolder>(
     PathDiffUtil) {
 
     lateinit var context: Context
@@ -28,7 +30,7 @@ class GalleryScaleAdapter(private val onClickListener: ((Int?) -> Unit)) : Paged
         )
 
         return ThumbnailViewHolder(view) {
-            onClickListener.invoke(it)
+            position, v -> onClickListener.invoke(position, v)
             Log.d(TAG, "invoking callback")
         }
     }

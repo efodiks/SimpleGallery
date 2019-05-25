@@ -5,6 +5,7 @@ import android.transition.TransitionManager
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import androidx.core.app.SharedElementCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -12,9 +13,11 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_master_view.*
 import kotlinx.android.synthetic.main.fragment_master_view.view.*
+import kotlinx.android.synthetic.main.thumbnail_item.view.*
 import michalengel.pwr.application2.R
 import michalengel.pwr.application2.view_model.ImagesUrisViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.lang.IllegalStateException
 
 
 class MasterViewFragment : Fragment() {
@@ -32,18 +35,55 @@ class MasterViewFragment : Fragment() {
 
         view.imagesRecyclerView.layoutManager = GridLayoutManager(context, 2)
 
-
-        val adapter = GalleryScaleAdapter {
-            Log.d(TAG, "received onClick image: $it")
-            viewModel.select(it)
-            view.findNavController().navigate(R.id.detailViewFragment)
+        val adapter = GalleryScaleAdapter { position, v ->
+            viewModel.select(position)
+            val extras = FragmentNavigatorExtras(
+                v to v.transitionName
+            )
+            view.findNavController().navigate(R.id.detailViewFragment, null, null, extras)
         }
         view.imagesRecyclerView.adapter = adapter
         viewModel.imagesUriList.observe(this, Observer {
             TransitionManager.beginDelayedTransition(view.imagesRecyclerView)
             adapter.submitList(it)
         })
+        prepareTransitions()
+        postponeEnterTransition()
+        view.imagesRecyclerView.viewTreeObserver.addOnPreDrawListener (
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    view.imagesRecyclerView.viewTreeObserver.removeOnPreDrawListener(this)
+                    startPostponedEnterTransition()
+                    return false
+                }
+            }
+        )
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    fun prepareTransitions() {
+        setExitSharedElementCallback(object : SharedElementCallback() {
+            override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
+                val v =
+                    imagesRecyclerView.findViewHolderForAdapterPosition(viewModel.selected.value ?: throw IllegalStateException())
+                if(v == null) {
+                    sharedElements?.clear()
+                    return
+                }
+                if (names.isNullOrEmpty() || sharedElements == null) {
+                    Log.d(
+                        TAG,
+                        "OnMapSharedElements error: names = $names, sharedElements = $sharedElements, viewHolder = $v"
+                    )
+                    return
+                }
+                sharedElements[names[0]] = v.itemView.image
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

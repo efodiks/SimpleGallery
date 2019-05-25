@@ -5,13 +5,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.core.app.SharedElementCallback
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
+import androidx.transition.ChangeBounds
 import androidx.viewpager.widget.ViewPager
+import kotlinx.android.synthetic.main.fragment_detail_view.*
 import kotlinx.android.synthetic.main.fragment_detail_view.view.*
+import kotlinx.android.synthetic.main.fragment_image_detail.*
+import kotlinx.android.synthetic.main.thumbnail_item.view.*
+import kotlinx.android.synthetic.main.viewpager_item.view.*
 import michalengel.pwr.application2.R
 import michalengel.pwr.application2.model.ImageDetailsProvider
 import michalengel.pwr.application2.view.single_image_view.image_details_view.ImageDetailFragment
@@ -24,6 +30,28 @@ class DetailViewFragment : Fragment() {
     val viewModel by sharedViewModel<ImagesUrisViewModel>()
     val TAG = "DetailViewFragment"
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setEnterSharedElementCallback(object : SharedElementCallback() {
+            override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
+                val currentFragment =
+                    photos_viewpager.adapter?.instantiateItem(
+                        photos_viewpager,
+                        viewModel.selected.value ?: return
+                    ) as Fragment
+                val v = currentFragment.view
+                if (names.isNullOrEmpty() || sharedElements == null || v == null) {
+                    Log.d(
+                        TAG,
+                        "OnMapSharedElements error: names = $names, sharedElements = $sharedElements, viewHolder = $v"
+                    )
+                    return
+                }
+                sharedElements[names[0]] = v.detail_image
+            }
+        })
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(TAG, "onCreateView called")
         setHasOptionsMenu(true)
@@ -35,7 +63,7 @@ class DetailViewFragment : Fragment() {
         view.photos_viewpager.addOnPageChangeListener(
             object : ViewPager.OnPageChangeListener {
                 override fun onPageSelected(position: Int) {
-                    viewModel.selected.postValue(position)
+                    viewModel.selected.value = position
                 }
 
                 override fun onPageScrollStateChanged(state: Int) {
@@ -46,6 +74,23 @@ class DetailViewFragment : Fragment() {
             })
         view.photos_viewpager.currentItem = viewModel.selected.value!!
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        postponeEnterTransition()
+        sharedElementEnterTransition = ChangeBounds().apply {
+            duration = 375
+        }
+        sharedElementReturnTransition = ChangeBounds().apply {
+            duration = 375
+        }
+        photos_viewpager.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                photos_viewpager.viewTreeObserver.removeOnPreDrawListener(this)
+                startPostponedEnterTransition()
+                return false
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -84,7 +129,7 @@ class DetailViewFragment : Fragment() {
                 putExtra("mimeType", "image/*")
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-        startActivity(Intent.createChooser(intent, "Set as:"))
+        startActivity(Intent.createChooser(intent, "Use the image as:"))
     }
 
     private fun instantiateImageDetails(uri: Uri) {
