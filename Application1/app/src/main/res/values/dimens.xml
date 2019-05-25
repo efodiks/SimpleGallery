@@ -1,6 +1,0 @@
-<resources>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="regular_margin">8</dimen>
-    <dimen name="note_item_padding">6dp</dimen>
-    <dimen name="note_item_textSize">12sp</dimen>
-</resources>
