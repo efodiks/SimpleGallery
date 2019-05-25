@@ -13,22 +13,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.transition.ChangeBounds
 import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.fragment_detail_view.*
-import kotlinx.android.synthetic.main.fragment_detail_view.view.*
-import kotlinx.android.synthetic.main.fragment_image_detail.*
-import kotlinx.android.synthetic.main.thumbnail_item.view.*
-import kotlinx.android.synthetic.main.viewpager_item.view.*
+import kotlinx.android.synthetic.main.fragment_single_image.*
+import kotlinx.android.synthetic.main.fragment_single_image.view.*
+import kotlinx.android.synthetic.main.image_view_pager_item.view.*
 import michalengel.pwr.application2.R
-import michalengel.pwr.application2.model.ImageDetailsProvider
-import michalengel.pwr.application2.view.single_image_view.image_details_view.ImageDetailFragment
-import michalengel.pwr.application2.view.single_image_view.image_details_view.ImageDetailFragmentArgs
 import michalengel.pwr.application2.view_model.ImagesUrisViewModel
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class DetailViewFragment : Fragment() {
+class SingleImageFragment : Fragment() {
     val viewModel by sharedViewModel<ImagesUrisViewModel>()
-    val TAG = "DetailViewFragment"
+    val TAG = "SingleImageFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +49,8 @@ class DetailViewFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(TAG, "onCreateView called")
         setHasOptionsMenu(true)
-        val view = inflater.inflate(R.layout.fragment_detail_view, container, false)
-        view.photos_viewpager.adapter = ViewPagerAdapter(
+        val view = inflater.inflate(R.layout.fragment_single_image, container, false)
+        view.photos_viewpager.adapter = ImagesViewPagerAdapter(
             childFragmentManager,
             viewModel.imagesUriList.value!!
         )
@@ -100,7 +94,7 @@ class DetailViewFragment : Fragment() {
             MenuItemCompat.getActionProvider(menu.findItem(R.id.action_item_share)) as androidx.appcompat.widget.ShareActionProvider
         viewModel.selected.observe(this, Observer {
             if (viewModel.imagesUriList.value != null && viewModel.selected.value != null) {
-                Log.d("DetailViewFragment", "selected: $it")
+                Log.d("SingleImageFragment", "selected: $it")
                 shareActionProvider.setShareIntent(
                     Intent(Intent.ACTION_SEND).apply {
                         type = "image/*"
@@ -133,7 +127,7 @@ class DetailViewFragment : Fragment() {
     }
 
     private fun instantiateImageDetails(uri: Uri) {
-        val action = DetailViewFragmentDirections.actionDetailViewFragmentToImageDetailFragment(uri)
+        val action = SingleImageFragmentDirections.actionDetailViewFragmentToImageDetailFragment(uri)
         findNavController().navigate(action)
     }
 }

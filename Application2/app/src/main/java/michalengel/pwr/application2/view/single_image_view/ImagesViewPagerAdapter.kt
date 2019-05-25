@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 
 
-class ViewPagerAdapter(
+class ImagesViewPagerAdapter(
     fragmentManager: FragmentManager,
     private val imagesUris: List<Uri>) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -18,8 +18,8 @@ class ViewPagerAdapter(
     }
 
     override fun getItem(position: Int): Fragment {
-        Log.d("ViewPagerAdapter", "getting item at position $position")
-        val fragment = ViewPagerItem.newInstance()
+        Log.d("ImagesViewPagerAdapter", "getting item at position $position")
+        val fragment = ImageViewPagerItem.newInstance()
         fragment.arguments = Bundle()
             .apply { putParcelable("imageUri", imagesUris[position]) }
         return fragment

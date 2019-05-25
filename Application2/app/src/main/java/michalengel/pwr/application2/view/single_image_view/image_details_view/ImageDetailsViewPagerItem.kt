@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_details_view_pager.*
-import kotlinx.android.synthetic.main.fragment_details_view_pager.view.*
+import kotlinx.android.synthetic.main.image_details_view_pager_item.view.*
 import michalengel.pwr.application2.R
 
-class DetailsViewPagerFragment : Fragment() {
+class ImageDetailsViewPagerItem : Fragment() {
     private lateinit var text: HashMap<String, String>
     val TAG = this.javaClass.simpleName
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +20,7 @@ class DetailsViewPagerFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_details_view_pager, container, false)
+        val view = inflater.inflate(R.layout.image_details_view_pager_item, container, false)
         view.details_text_view.text = processMap(text)
         Log.d(TAG, "setting text to ${processMap(text)}")
         return view
@@ -30,8 +29,8 @@ class DetailsViewPagerFragment : Fragment() {
     companion object {
        private const val ARG_TEXT = "text"
         @JvmStatic
-        fun newInstance(text: HashMap<String, String>): DetailsViewPagerFragment {
-            return DetailsViewPagerFragment()
+        fun newInstance(text: HashMap<String, String>): ImageDetailsViewPagerItem {
+            return ImageDetailsViewPagerItem()
                 .apply {
                     arguments = Bundle()
                         .apply { putSerializable(ARG_TEXT, text) }

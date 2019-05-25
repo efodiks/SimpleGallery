@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.single_image_view.image_details_view.ImageDetailFragment"
+        tools:context=".view.single_image_view.image_details_view.ImageDetailsFragment"
         android:id="@+id/frameLayout">
 
     <com.google.android.material.tabs.TabLayout

@@ -9,12 +9,12 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import kotlinx.android.synthetic.main.thumbnail_item.view.*
+import kotlinx.android.synthetic.main.image_recycler_view_item.view.*
 import michalengel.pwr.application2.R
 
-class ThumbnailViewHolder(itemView: View, callback: ((Int, View) -> Unit) ) : RecyclerView.ViewHolder(itemView) {
+class ImagesRecyclerViewHolder(itemView: View, callback: ((Int, View) -> Unit) ) : RecyclerView.ViewHolder(itemView) {
     private var imageView: ImageView = itemView.image
-    private val TAG = "ThumbnailViewHolder"
+    private val TAG = "ImagesRecyclerViewHolder"
 
     init {
         itemView.setOnClickListener {

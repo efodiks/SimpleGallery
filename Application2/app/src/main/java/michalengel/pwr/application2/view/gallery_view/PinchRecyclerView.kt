@@ -78,7 +78,7 @@ class PinchRecyclerView(context: Context, attrs: AttributeSet) : RecyclerView(co
         layoutParams.width = Math.round(displayMetrics.widthPixels * linearScaleFactor)
         val adapt = adapter
         adapter = adapt*/
-//        (adapter!! as GalleryScaleAdapter).changeScale(linearScaleFactor)
+//        (adapter!! as ImagesRecyclerAdapter).changeScale(linearScaleFactor)
 //        this.children.forEach { Log.d(TAG, "PRE: Child$it width:${it.width} height:${it.height}") }
 //        this.children.forEach {
 //            it.layoutParams.width = Math.round((it.measuredWidth * linearScaleFactor))

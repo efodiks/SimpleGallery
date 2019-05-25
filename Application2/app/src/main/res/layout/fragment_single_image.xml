@@ -6,7 +6,7 @@
                  android:layout_height="match_parent"
                  android:theme="@style/AppTheme.NoActionBar"
                  android:id="@+id/detail_view_main"
-                 tools:showIn="@layout/activity_gallery">
+                 tools:showIn="@layout/activity_main">
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/photos_viewpager"
             android:layout_width="match_parent"

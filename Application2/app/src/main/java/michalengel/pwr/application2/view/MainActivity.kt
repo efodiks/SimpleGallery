@@ -11,23 +11,20 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
-import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
-import kotlinx.android.synthetic.main.activity_gallery.*
+import kotlinx.android.synthetic.main.activity_main.*
 import michalengel.pwr.application2.R
-import michalengel.pwr.application2.view.single_image_view.DetailViewFragment
-import michalengel.pwr.application2.view.gallery_view.MasterViewFragment
 import michalengel.pwr.application2.view_model.ImagesUrisViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class GalleryActivity : AppCompatActivity() {
-    private val TAG = "GalleryActivity"
+class MainActivity : AppCompatActivity() {
+    private val TAG = "MainActivity"
     private val PICK_FOLDER_CODE = 1
     private val viewModelUri by viewModel<ImagesUrisViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_gallery)
+        setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
     }
 
