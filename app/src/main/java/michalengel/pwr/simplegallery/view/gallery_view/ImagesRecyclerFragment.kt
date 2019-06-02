@@ -104,7 +104,7 @@ class ImagesRecyclerFragment : Fragment() {
 
 
     private fun onChangeLayoutMenuItemClicked(item: MenuItem): Boolean {
-        //imagesRecyclerView.swapLayoutManager()
+        imagesRecyclerView.swapLayoutManager()
         //TODO Icon and swapping columns
         item.icon =
             if (imagesRecyclerView.isGridLayout) resources.getDrawable(R.drawable.ic_view_list_white_24dp, null)
