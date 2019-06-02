@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_single_image.*
 import kotlinx.android.synthetic.main.fragment_single_image.view.*
 import kotlinx.android.synthetic.main.image_view_pager_item.view.*
 import michalengel.pwr.simplegallery.R
+import michalengel.pwr.simplegallery.view.ViewPagerAnimation
 import michalengel.pwr.simplegallery.view_model.ImagesUrisViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -67,6 +68,7 @@ class SingleImageFragment : Fragment() {
                 }
             })
         view.photos_viewpager.currentItem = viewModel.selected.value!!
+        view.photos_viewpager.setPageTransformer(true, ViewPagerAnimation())
         return view
     }
 

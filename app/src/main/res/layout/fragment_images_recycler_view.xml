@@ -8,5 +8,6 @@
         android:id="@+id/imagesRecyclerView"
         tools:listitem="@layout/image_recycler_view_item"
         tools:showIn="@layout/activity_main"
-        android:padding="0dp">
+        android:padding="0dp"
+        android:layoutAnimation="@anim/layout_animation_fall_down">
 </michalengel.pwr.simplegallery.view.gallery_view.PinchRecyclerView>
