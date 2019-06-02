@@ -8,9 +8,13 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
+import androidx.core.content.res.getResourceIdOrThrow
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import michalengel.pwr.simplegallery.R
 
 class PinchRecyclerView(context: Context, attrs: AttributeSet) : RecyclerView(context, attrs) {
     private var gridScaleFactor = 2f
@@ -18,6 +22,25 @@ class PinchRecyclerView(context: Context, attrs: AttributeSet) : RecyclerView(co
     private var currentColumns = 2
     var isGridLayout = true
     private val TAG = "PinchRecyclerView"
+    private var linAnim: LayoutAnimationController
+
+    init {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.PinchRecyclerView,
+            0, 0
+        ).apply {
+            try {
+                linAnim = AnimationUtils.loadLayoutAnimation(
+                    context,
+                    getResourceIdOrThrow(R.styleable.PinchRecyclerView_linearAnim)
+                )
+            } finally {
+                recycle()
+            }
+        }
+        if(!isGridLayout) layoutAnimation = linAnim
+    }
 
     private val scaleListener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector?): Boolean {
@@ -45,6 +68,7 @@ class PinchRecyclerView(context: Context, attrs: AttributeSet) : RecyclerView(co
 
     fun swapLayoutManager() {
         isGridLayout = !isGridLayout
+        layoutAnimation = if(isGridLayout) null else linAnim
         TransitionManager.beginDelayedTransition(this)
         layoutManager =
             if (isGridLayout) GridLayoutManager(context, currentColumns)
